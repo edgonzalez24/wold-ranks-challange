@@ -6,6 +6,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #1B1D1F;
 }
 
 body {
@@ -15,4 +16,12 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+.hero-layout {
+  height: 300px;
+  background-image: url('./../images/hero-image.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
 }
