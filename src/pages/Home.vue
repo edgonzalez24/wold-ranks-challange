@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import Filters from '@/components/Filters.vue';
   import Search from '@/components/Search.vue';
 </script>
 <template>
@@ -13,11 +14,9 @@
       </div>
     </div>
     <!-- Content -->
-    <div class="flex flex-row space-x-4 mt-10">
+    <div class="flex flex-row space-x-10 mt-10">
       <div class="w-1/4">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos fugiat ex alias ut. Assumenda facilis
-        dolor quos, nulla voluptatem reprehenderit neque amet nemo voluptatibus, odit dolore, rerum voluptate quia.
-        Praesentium.
+        <Filters />
       </div>
       <div class="w-3/4">
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ad voluptate nihil blanditiis veniam obcaecati cum
