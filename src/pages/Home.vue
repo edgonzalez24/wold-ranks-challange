@@ -9,18 +9,16 @@
     TableHeader,
     TableRow,
   } from '@/components/ui/table'
-  import { useCountries } from '@/composables/useCountries';
-  import { onMounted, ref } from 'vue';
+  import { useStore } from '@/store';
+  import { onMounted } from 'vue';
+  import { storeToRefs } from 'pinia';
 
-  const countries = ref<Country[]>([]);
-  const { isLoading, getCountries } = useCountries();
+  const store = useStore();
+  const { countries, loading } = storeToRefs(store);
+
 
   onMounted(async() => {
-    try {
-      countries.value = await getCountries('/all');
-    } catch (error) {
-      console.error("Error al obtener países:", error);
-    }
+    await store.getCountries('all');
   });
 </script>
 <template>
@@ -49,13 +47,13 @@
               <TableHead>Name</TableHead>
               <TableHead>Population</TableHead>
               <TableHead>Area (km²)</TableHead>
-              <TableHead class="text-right">
+              <TableHead class="text-center">
                 Region
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow v-for="country in countries" :key="country.name.common">
+            <TableRow v-if="!loading" v-for="country in countries" :key="country.name.common">
               <TableCell>
                 <div class="text-3xl">
                   {{ country.flag }}
@@ -65,6 +63,23 @@
               <TableCell class="text-white text-lg">{{ country.population }}</TableCell>
               <TableCell class="text-white text-lg">{{ country.area }}</TableCell>
               <TableCell class="text-center text-white text-lg">{{ country.region }}</TableCell>
+            </TableRow>
+            <TableRow v-else="loading" class="animate-pulse" v-for="(_, index) in new Array(5)" :key="index">
+              <TableCell>
+                <div class="rounded-sm bg-gray-200 h-8 w-12"></div>
+              </TableCell>
+              <TableCell>
+                <div class="h-3 w-32 bg-gray-200 rounded-full"></div>
+              </TableCell>
+              <TableCell>
+                <div class="h-3 w-32 bg-gray-200 rounded-full"></div>
+              </TableCell>
+              <TableCell>
+                <div class="h-3 w-32 bg-gray-200 rounded-full"></div>
+              </TableCell>
+              <TableCell>
+                <div class="h-3 w-32 bg-gray-200 rounded-full"></div>
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>

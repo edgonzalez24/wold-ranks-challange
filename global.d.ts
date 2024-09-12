@@ -3,7 +3,9 @@ export {};
 
 declare global {
   interface PiniaState {
-    count: number;
+    countries: Country[];
+    loading: boolean;
+    error: string | null;
   }
 
   interface RegionItem {
