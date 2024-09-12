@@ -1,6 +1,27 @@
 <script setup lang="ts">
   import Filters from '@/components/Filters.vue';
   import Search from '@/components/Search.vue';
+  import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+  } from '@/components/ui/table'
+  import { useCountries } from '@/composables/useCountries';
+  import { onMounted, ref } from 'vue';
+
+  const countries = ref<Country[]>([]);
+  const { isLoading, getCountries } = useCountries();
+
+  onMounted(async() => {
+    try {
+      countries.value = await getCountries('/all');
+    } catch (error) {
+      console.error("Error al obtener países:", error);
+    }
+  });
 </script>
 <template>
   <div class="max-w-7xl mx-auto -mt-16 min-h-screen rounded-lg p-6 bg-dark-200 relative">
@@ -19,14 +40,34 @@
         <Filters />
       </div>
       <div class="w-3/4">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ad voluptate nihil blanditiis veniam obcaecati cum
-        magnam, aut incidunt ea nostrum sint numquam libero quidem voluptas ipsam quod, possimus accusantium dolorum.
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit deserunt minus dignissimos rem, ab eos
-        temporibus placeat ratione. Mollitia rerum est consequatur impedit omnis veritatis possimus libero quis itaque
-        natus. <br>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit deserunt minus dignissimos rem, ab eos
-        temporibus placeat ratione. Mollitia rerum est consequatur impedit omnis veritatis possimus libero quis itaque
-        natus. <br>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead class="w-[100px]">
+                Flag
+              </TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Population</TableHead>
+              <TableHead>Area (km²)</TableHead>
+              <TableHead class="text-right">
+                Region
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            <TableRow v-for="country in countries" :key="country.name.common">
+              <TableCell>
+                <div class="text-3xl">
+                  {{ country.flag }}
+                </div>
+              </TableCell>
+              <TableCell class="text-white text-lg">{{ country.name.common }}</TableCell>
+              <TableCell class="text-white text-lg">{{ country.population }}</TableCell>
+              <TableCell class="text-white text-lg">{{ country.area }}</TableCell>
+              <TableCell class="text-center text-white text-lg">{{ country.region }}</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </div>
     </div>
   </div>
